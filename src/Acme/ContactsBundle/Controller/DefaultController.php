@@ -11,26 +11,16 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
-        $contact = $repository->findAll();
-        
-        var_dump($contact); die;
+        $contacts = $repository->findAll();
 
-//        return new Response('Created product id ' . $product->getId());
-        return $this->render('AcmeContactsBundle:Default:index.html.twig', array('name' => $contact->getLastName()));
+        return $this->render('AcmeContactsBundle:Default:index.html.twig', array(
+            'name' => 'test'
+//            'contacts' => $this->get('jms_serializer')->serialize($contacts, 'json')
+        ));
     }
 
-    public function createAction($name)
+    public function createAction()
     {
-        $contact = new Contact();
-        $contact->setLastName('A Foo Bar');
-        $contact->setDescription('Lorem ipsum dolor');
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($contact);
-        $em->flush();
-
-//        return new Response('Created product id ' . $product->getId());
-        return $this->render('AcmeContactsBundle:Default:index.html.twig', array('name' => $contact->getLastName()));
     }
 
     public function storeAction($name)
@@ -77,16 +67,15 @@ class DefaultController extends Controller
 
     public function updateAction($name)
     {
-        $contact = new Contact();
-        $contact->setLastName('A Foo Bar');
-        $contact->setDescription('Lorem ipsum dolor');
-
         $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($contact);
-        $em->flush();
+        $product = $em->getRepository('AcmeStoreBundle:Product')->find($id);
 
-//        return new Response('Created product id ' . $product->getId());
-        return $this->render('AcmeContactsBundle:Default:index.html.twig', array('name' => $contact->getLastName()));
+        if (!$product) {
+            throw $this->createNotFoundException('No product found for id ' . $id);
+        }
+
+        $product->setName('New product name!');
+        $em->flush();
     }
 
     public function destroyAction($name)

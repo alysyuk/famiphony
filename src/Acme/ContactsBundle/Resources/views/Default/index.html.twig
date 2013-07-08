@@ -1,1 +1,15 @@
-Hello {{ name }}!
+<!doctype html>
+<html lang="en">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <h1>Hello {{ name }}</h1>
+
+        {% block javascripts %}
+            <script src="{{ asset('bundles/acmecontacts/js/underscore-min.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/jquery-1.8.3.min.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/backbone-min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>
