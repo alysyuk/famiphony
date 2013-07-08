@@ -1,4 +1,4 @@
-acme_hello:
-    resource: "@AcmeHelloBundle/Resources/config/routing.yml"
+acme_contacts:
+    resource: "@AcmeContactsBundle/Resources/config/routing.yml"
     prefix:   /
 

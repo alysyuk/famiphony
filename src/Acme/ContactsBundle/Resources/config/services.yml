@@ -1,0 +1,7 @@
+parameters:
+#    acme_contacts.example.class: Acme\ContactsBundle\Example
+
+services:
+#    acme_contacts.example:
+#        class: %acme_contacts.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
