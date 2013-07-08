@@ -4,6 +4,8 @@ namespace Acme\ContactsBundle\Controller;
 
 use Acme\ContactsBundle\Entity\Contact;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class DefaultController extends Controller
 {
@@ -13,11 +15,21 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
         $contacts = $repository->findAll();
 
+//        return $this->get('jms_serializer')->serialize($contacts, 'json');
         return $this->render('AcmeContactsBundle:Default:index.html.twig', array(
             'name' => 'test'
 //            'contacts' => $this->get('jms_serializer')->serialize($contacts, 'json')
         ));
     }
+    
+    public function getAllAction()
+    {
+        $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
+        $contacts = $repository->findAll();
+
+        $helloworld = array('hello' => 'world');
+        return new Response(json_encode(array('message' => $helloworld)));
+    }    
 
     public function createAction()
     {

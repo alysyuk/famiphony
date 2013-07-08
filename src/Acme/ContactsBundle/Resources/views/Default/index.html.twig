@@ -10,6 +10,22 @@
             <script src="{{ asset('bundles/acmecontacts/js/underscore-min.js') }}"></script>
             <script src="{{ asset('bundles/acmecontacts/js/jquery-1.8.3.min.js') }}"></script>
             <script src="{{ asset('bundles/acmecontacts/js/backbone-min.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/main.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/models.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/views.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/router.js') }}"></script>
+            <script src="{{ asset('bundles/acmecontacts/js/collections.js') }}"></script>
         {% endblock %}
-    </body>
-</html>
+
+        <script>
+            new App.Router();
+            Backbone.history.start();
+
+            App.contacts = new App.Collections.Contacts();
+            App.contacts.fetch().then(function() {
+                new App.Views.App({collection: App.contacts});
+            });
+        </script>
+            
+        </body>
+    </html>
