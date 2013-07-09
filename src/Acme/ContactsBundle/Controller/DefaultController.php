@@ -12,25 +12,20 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
-        $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
-        $contacts = $repository->findAll();
+        $isAjaxCall = $this->getRequest()->isXmlHttpRequest();
+        if ($isAjaxCall) {
+            $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
+            $contacts = $repository->findAll();
+            
+            $serializedEntity = $this->container->get('serializer')->serialize($contacts, 'json');
+            return new Response($serializedEntity);        
+        }
 
-//        return $this->get('jms_serializer')->serialize($contacts, 'json');
         return $this->render('AcmeContactsBundle:Default:index.html.twig', array(
-            'name' => 'test'
-//            'contacts' => $this->get('jms_serializer')->serialize($contacts, 'json')
+//            'name' => 'test',
         ));
     }
     
-    public function getAllAction()
-    {
-        $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
-        $contacts = $repository->findAll();
-
-        $helloworld = array('hello' => 'world');
-        return new Response(json_encode(array('message' => $helloworld)));
-    }    
-
     public function createAction()
     {
     }
