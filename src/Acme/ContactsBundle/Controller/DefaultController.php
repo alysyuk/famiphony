@@ -41,19 +41,17 @@ class DefaultController extends Controller
                 'Acme\ContactsBundle\Entity\Contact', 
                 'json'
             );
-
-            $em = $this->getDoctrine()->getEntityManager();
             
-            $em->getConnection()->beginTransaction();     
             try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->getConnection()->beginTransaction();     
                 $em->persist($contact);
                 $em->flush();
 
-                $newContact = $em->getRepository('AcmeContactsBundle:Contact')
-                        ->findOneBy(
-                        array(
-                            'email_address' => $contact->getEmailAddress()
-                        )
+                $newContact = $em->getRepository('AcmeContactsBundle:Contact')->findOneBy(
+                    array(
+                        'email_address' => $contact->getEmailAddress()
+                    )
                 );
 
                 $newSerializedContact = $this->container->get('serializer')

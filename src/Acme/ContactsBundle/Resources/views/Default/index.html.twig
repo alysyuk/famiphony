@@ -36,7 +36,25 @@
             <div>
                 <input type="submit" value="Добавить контакт">
             </div>
-        </form>           
+        </form>
+        
+        <table id="allContacts">
+            <thead>
+                <tr>
+                    <td><strong>Name</strong></td>
+                    <td><strong>Last name</strong></td>
+                    <td><strong>Email</strong></td>
+                    <td><strong>Description</strong></td>
+                </tr>
+            </thead>
+        </table>        
+        
+        <script id="contactTpl" type="text/x-underscore-template">
+            <td><%= first_name %></td>
+            <td><%= last_name %></td>
+            <td><%= email_address %></td>
+            <td><%= description %></td>            
+        </script>        
 
         <script>
             new App.Router();
