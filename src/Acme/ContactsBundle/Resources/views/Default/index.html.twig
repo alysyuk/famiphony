@@ -50,6 +50,7 @@
                     <td><strong>Last name</strong></td>
                     <td><strong>Email</strong></td>
                     <td><strong>Description</strong></td>
+                    <td><strong>Action</strong></td>
                 </tr>
             </thead>
         </table>        
@@ -58,7 +59,10 @@
             <td><%= first_name %></td>
             <td><%= last_name %></td>
             <td><%= email_address %></td>
-            <td><%= description %></td>            
+            <td><%= description %></td>
+            <td>
+                <a href="#delete/<%= id %>" class="delete">Delete</a>
+            </td>    
         </script>        
 
         <script>

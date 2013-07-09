@@ -6,4 +6,8 @@ acme_contacts_homepage:
 acme_contacts_store:
     pattern:  /contacts
     defaults: { _controller: AcmeContactsBundle:Default:store }
-    methods:  [POST]    
+    
+acme_contacts_delete:
+    pattern:  /contacts/{contactId}
+    defaults: { _controller: AcmeContactsBundle:Default:destroy }
+    methods:  [DELETE]

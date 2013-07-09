@@ -113,18 +113,16 @@ class DefaultController extends Controller
         $em->flush();
     }
 
-    public function destroyAction($name)
+    public function destroyAction($contactId)
     {
-        $contact = new Contact();
-        $contact->setLastName('A Foo Bar');
-        $contact->setDescription('Lorem ipsum dolor');
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($contact);
+        $em = $this->getDoctrine()->getEntityManager();        
+        $repository = $em->getRepository('AcmeContactsBundle:Contact');
+        $contact = $repository->find($contactId);
+        
+        $em->remove($contact);
         $em->flush();
-
-//        return new Response('Created product id ' . $product->getId());
-        return $this->render('AcmeContactsBundle:Default:index.html.twig', array('name' => $contact->getLastName()));
+        
+        return new Response('success', 200);    
     }
 
 }
