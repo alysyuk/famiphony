@@ -1,3 +1,9 @@
 acme_contacts_homepage:
-    pattern:  /
+    pattern:  /contacts
     defaults: { _controller: AcmeContactsBundle:Default:index }
+    methods:  [GET]
+    
+acme_contacts_store:
+    pattern:  /contacts
+    defaults: { _controller: AcmeContactsBundle:Default:store }
+    methods:  [POST]    

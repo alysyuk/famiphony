@@ -3,7 +3,6 @@ App.Router = Backbone.Router.extend({
         '': 'index'
     },
     index: function() {
-        console.log('Index!!!');
     }
 
 });

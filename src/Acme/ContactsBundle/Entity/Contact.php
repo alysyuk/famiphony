@@ -24,7 +24,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=255)
      */
     private $first_name;
 
@@ -38,9 +38,9 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=false)
+     * @ORM\Column(name="email_address", type="string", length=255, unique=true, nullable=false)
      */
-    private $email;
+    private $email_address;
 
     /**
      * @var string
@@ -112,9 +112,9 @@ class Contact
      * @param string $email
      * @return Contact
      */
-    public function setEmail($email)
+    public function setEmailAddress($email)
     {
-        $this->email = $email;
+        $this->email_address = $email;
     
         return $this;
     }
@@ -124,9 +124,9 @@ class Contact
      *
      * @return string 
      */
-    public function getEmail()
+    public function getEmailAddress()
     {
-        return $this->email;
+        return $this->email_address;
     }
 
     /**

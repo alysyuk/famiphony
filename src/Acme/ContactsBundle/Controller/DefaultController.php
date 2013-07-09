@@ -17,12 +17,12 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getRepository('AcmeContactsBundle:Contact');
             $contacts = $repository->findAll();
             
-            $serializedEntity = $this->container->get('serializer')->serialize($contacts, 'json');
-            return new Response($serializedEntity);        
+            $serializedContacts = $this->container->get('serializer')->serialize($contacts, 'json');
+            return new Response($serializedContacts);        
         }
 
         return $this->render('AcmeContactsBundle:Default:index.html.twig', array(
-//            'name' => 'test',
+            
         ));
     }
     
@@ -30,18 +30,49 @@ class DefaultController extends Controller
     {
     }
 
-    public function storeAction($name)
+    public function storeAction()
     {
-        $contact = new Contact();
-        $contact->setLastName('A Foo Bar');
-        $contact->setDescription('Lorem ipsum dolor');
+        $isAjaxCall = $this->getRequest()->isXmlHttpRequest();
+        if ($isAjaxCall) {
+            $content = $this->get("request")->getContent(); 
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($contact);
-        $em->flush();
+            $contact = $this->container->get('serializer')->deserialize(
+                $content,
+                'Acme\ContactsBundle\Entity\Contact', 
+                'json'
+            );
 
-//        return new Response('Created product id ' . $product->getId());
-        return $this->render('AcmeContactsBundle:Default:index.html.twig', array('name' => $contact->getLastName()));
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->getConnection()->beginTransaction();     
+            try {
+                $em->persist($contact);
+                $em->flush();
+
+                //            $contacts = $em->getRepository('AcmeContactsBundle:Contact')->findAll();
+                //            
+                //            $serializedContacts = $this->container->get('serializer')->serialize($contacts, 'json');
+                //            return new Response($serializedContacts);             
+
+                $newContact = $em->getRepository('AcmeContactsBundle:Contact')
+                        ->findBy(
+                        array('email_address' => $contact->getEmailAddress())
+                );
+
+
+                $newSerializedContacts = $this->container->get('serializer')->serialize($newContact, 'json');
+
+                $em->getConnection()->commit();
+            } catch (Exception $e) {
+                $em->getConnection()->rollback();
+                $em->close();
+                throw $e;
+            }
+            return new Response($newSerializedContacts);        
+        }        
+
+        return $this->render('AcmeContactsBundle:Default:index.html.twig', array(
+            
+        ));
     }
 
     public function showAction($name)

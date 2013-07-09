@@ -6,27 +6,32 @@
 
 App.Views.App = Backbone.View.extend({
     initialize: function() {
-        var addContactView = new App.Views.AddContact({ collection: App.contacts });
+        var addContactView = new App.Views.AddContact({
+            collection: App.contacts
+        });
     }
 });
 
 
 /*
-|---------------------------------------------------
-| Add Contact View
-|---------------------------------------------------
-*/
- 
+ |---------------------------------------------------
+ | Add Contact View
+ |---------------------------------------------------
+ */
+
 App.Views.AddContact = Backbone.View.extend({
     el: '#addContact',
- 
     events: {
-        'submit' : 'addContact'
+        'submit': 'addContact'
     },
- 
     addContact: function(e) {
         e.preventDefault();
- 
-        console.log( 'add contact now' );
+
+        this.collection.create({
+            first_name: this.$('#first_name').val(),
+            last_name: this.$('#last_name').val(),
+            email_address: this.$('#email_address').val(),
+            description: this.$('#description').val()
+        }, { wait: true });
     }
 });
