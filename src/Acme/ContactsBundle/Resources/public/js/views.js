@@ -6,11 +6,17 @@
 
 App.Views.App = Backbone.View.extend({
     initialize: function() {
+        vent.on('contact:edit', this.editContact, this);
+        
         var addContact = new App.Views.AddContact({ collection: App.contacts });
         var allContactsView = new App.Views.Contacts({ collection: App.contacts }).render();
-        
         $('#allContacts').append(allContactsView.el);        
-    }
+    },
+            
+    editContact: function(contact) {
+        var editContactView = new App.Views.EditContact({model: contact});
+        $('.editContact').html(editContactView.el);        
+    }              
 });
 
 
@@ -93,16 +99,23 @@ App.Views.Contact = Backbone.View.extend({
 
     initialize: function() {
         this.model.on('destroy', this.unrender, this);
+        this.model.on('change', this.render, this);
+        
         this.template = _.template($('#contactTpl').html())
     },
  
     events: {
-        'click a.delete' : 'deleteContact'
+        'click a.delete' : 'deleteContact',
+        'click a.edit'   : 'editContact'
     },
  
     deleteContact: function() {
         this.model.destroy();
     },
+            
+    editContact: function() {
+        vent.trigger('contact:edit', this.model);
+    },            
  
     unrender: function() {
         this.remove(); // this.$el.remove()
@@ -113,4 +126,47 @@ App.Views.Contact = Backbone.View.extend({
         return this;
     }
 
+});
+
+/*
+|---------------------------------------------------
+| Edit Contact View
+|---------------------------------------------------
+*/
+App.Views.EditContact = Backbone.View.extend({
+    initialize: function() {
+        this.template = _.template($('#editContactTpl').html());
+        this.render();
+
+        this.form = this.$('form');
+        this.first_name = this.form.find('#edit_first_name');
+        this.last_name = this.form.find('#edit_last_name');
+        this.email_address = this.form.find('#edit_email_address');
+        this.description = this.form.find('#edit_description');
+
+    },
+            
+    events: {
+        'submit form': 'submit'
+    },
+            
+    submit: function(e) {
+        e.preventDefault();
+
+        this.model.save({
+            first_name: this.first_name.val(),
+            last_name: this.last_name.val(),
+            email_address: this.email_address.val(),
+            description: this.description.val()
+        });
+
+        this.remove();
+    },
+            
+    render: function() {
+        var html = this.template(this.model.toJSON());
+
+        this.$el.html(html);
+        return this;
+    }
 });

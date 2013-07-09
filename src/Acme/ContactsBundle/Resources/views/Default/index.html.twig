@@ -23,11 +23,11 @@
         
         <form id="addContact">
             <div>
-                <label for="first_name">Имя: </label>
+                <label for="first_name">Name: </label>
                 <input type="text" id="first_name" name="first_name" required>
             </div>
             <div>
-                <label for="last_name">Фамилия: </label>
+                <label for="last_name">Lastname: </label>
                 <input type="text" id="last_name" name="last_name" required>
             </div>
             <div>
@@ -35,11 +35,11 @@
                 <input type="email" id="email_address" name="email_address" required>
             </div>
             <div>
-                <label for="description">Описание: </label>
+                <label for="description">Description: </label>
                 <textarea id="description" name="description"></textarea>
             </div>
             <div>
-                <input type="submit" value="Добавить контакт">
+                <input type="submit" value="Add contact">
             </div>
         </form>
         
@@ -61,9 +61,40 @@
             <td><%= email_address %></td>
             <td><%= description %></td>
             <td>
-                <a href="#delete/<%= id %>" class="delete">Delete</a>
+                <a href="#/<%= id %>/edit" class="edit">Edit</a>    
+                <a href="#/<%= id %>/delete" class="delete">Delete</a>
             </td>    
-        </script>        
+        </script>
+        
+        <script id="editContactTpl" type="text/x-underscore-template">
+            <h2> Contact editing: <%= last_name %> <%= first_name %></h2>
+            <form id="edit-contact-form">
+            <div>
+            <label for="edit_first_name">Имя:</label>
+            <input type="text" id="edit_first_name" name="edit_first_name" value="<%= first_name %>">
+            </div>
+            <div>
+            <label for="edit_last_name">Фамилия:</label>
+            <input type="text" id="edit_last_name" name="edit_last_name" value="<%= last_name %>"> 
+            </div>
+            <div>
+            <label for="edit_email_address">Email:</label>
+            <input type="text" id="edit_email_address" name="edit_email_address" value="<%= email_address %>">
+            </div>
+            <div>
+            <label for="edit_description">Описание:</label>
+            <textarea id="edit_description" name="edit_description"><%= description %></textarea>
+            </div>
+            <div>
+            <input type="submit" value="Save changes">
+            <button type="button" class="cancel">Cancel</button>            
+            </div>
+            </form>
+        </script>
+        
+        <div class="editContact">
+
+        </div>        
 
         <script>
             new App.Router();

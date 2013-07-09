@@ -1,13 +1,23 @@
 acme_contacts_homepage:
     pattern:  /contacts
-    defaults: { _controller: AcmeContactsBundle:Default:index }
-    methods:  [GET]
+    defaults: { _controller: AcmeContactsBundle:Default:index, _format: ~ }
+    requirements:
+        _method: GET
     
 acme_contacts_store:
     pattern:  /contacts
-    defaults: { _controller: AcmeContactsBundle:Default:store }
+    defaults: { _controller: AcmeContactsBundle:Default:store, format: ~ }
+    requirements:
+        _method: POST    
     
 acme_contacts_delete:
     pattern:  /contacts/{contactId}
-    defaults: { _controller: AcmeContactsBundle:Default:destroy }
-    methods:  [DELETE]
+    defaults: { _controller: AcmeContactsBundle:Default:destroy, format: ~ }
+    requirements:
+        _method: DELETE 
+    
+acme_contacts_edit:
+    pattern:  /contacts/{contactId}
+    defaults: { _controller: AcmeContactsBundle:Default:update, format: ~ }
+    requirements:
+        _method: PUT 
