@@ -43,23 +43,21 @@ class DefaultController extends Controller
             );
 
             $em = $this->getDoctrine()->getEntityManager();
+            
             $em->getConnection()->beginTransaction();     
             try {
                 $em->persist($contact);
                 $em->flush();
 
-                //            $contacts = $em->getRepository('AcmeContactsBundle:Contact')->findAll();
-                //            
-                //            $serializedContacts = $this->container->get('serializer')->serialize($contacts, 'json');
-                //            return new Response($serializedContacts);             
-
                 $newContact = $em->getRepository('AcmeContactsBundle:Contact')
-                        ->findBy(
-                        array('email_address' => $contact->getEmailAddress())
+                        ->findOneBy(
+                        array(
+                            'email_address' => $contact->getEmailAddress()
+                        )
                 );
 
-
-                $newSerializedContacts = $this->container->get('serializer')->serialize($newContact, 'json');
+                $newSerializedContact = $this->container->get('serializer')
+                                                        ->serialize($newContact, 'json');
 
                 $em->getConnection()->commit();
             } catch (Exception $e) {
@@ -67,7 +65,8 @@ class DefaultController extends Controller
                 $em->close();
                 throw $e;
             }
-            return new Response($newSerializedContacts);        
+            
+            return new Response($newSerializedContact);        
         }        
 
         return $this->render('AcmeContactsBundle:Default:index.html.twig', array(

@@ -27,11 +27,13 @@ App.Views.AddContact = Backbone.View.extend({
     addContact: function(e) {
         e.preventDefault();
 
-        this.collection.create({
+        var newContact = this.collection.create({
             first_name: this.$('#first_name').val(),
             last_name: this.$('#last_name').val(),
             email_address: this.$('#email_address').val(),
             description: this.$('#description').val()
-        }, { wait: true });
+        }, {wait: true});
+
+        console.log(newContact);
     }
 });
