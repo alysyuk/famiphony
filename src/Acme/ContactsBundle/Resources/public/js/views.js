@@ -147,9 +147,10 @@ App.Views.EditContact = Backbone.View.extend({
     },
             
     events: {
-        'submit form': 'submit'
+        'submit #edit-contact-form' : 'submit',
+        'click button.cancel' : 'cancel'
     },
-            
+ 
     submit: function(e) {
         e.preventDefault();
 
@@ -163,6 +164,10 @@ App.Views.EditContact = Backbone.View.extend({
         this.remove();
     },
             
+    cancel: function() {
+        this.remove();
+    },
+
     render: function() {
         var html = this.template(this.model.toJSON());
 
