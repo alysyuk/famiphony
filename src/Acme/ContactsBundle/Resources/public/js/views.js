@@ -21,21 +21,39 @@ App.Views.App = Backbone.View.extend({
  */
 
 App.Views.AddContact = Backbone.View.extend({
+    
     el: '#addContact',
+            
+    initialize: function() {
+        this.first_name = $('#first_name');
+        this.last_name = $('#last_name');
+        this.email_address = $('#email_address');
+        this.description = $('#description');
+    },
             
     events: {
         'submit': 'addContact'
     },
+            
     addContact: function(e) {
         e.preventDefault();
 
         this.collection.create({
-            first_name: this.$('#first_name').val(),
-            last_name: this.$('#last_name').val(),
-            email_address: this.$('#email_address').val(),
-            description: this.$('#description').val()
-        });
+            first_name: this.first_name.val(),
+            last_name: this.last_name.val(),
+            email_address: this.email_address.val(),
+            description: this.description.val()
+        }, {wait: true});
 
+        this.clearForm();
+
+    },
+            
+    clearForm: function() {
+        this.first_name.val('');
+        this.last_name.val('');
+        this.email_address.val('');
+        this.description.val('');
     }
 });
 
@@ -46,6 +64,10 @@ App.Views.AddContact = Backbone.View.extend({
  */
 App.Views.Contacts = Backbone.View.extend({
     tagName: 'tbody',
+            
+    initialize: function() {
+        this.collection.on('add', this.addOne, this);
+    },            
             
     render: function() {
         this.collection.each(this.addOne, this);
